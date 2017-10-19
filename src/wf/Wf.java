@@ -604,8 +604,12 @@ public class Wf extends Application {
                         System.out.println("sql::::::" + currentQuery);
                         int result = queryForIntResult(currentQuery);
                         if (result == 1) {
-                            String meetings = RegistrationService.getAttendMeetings(id);
-                            scanResult.setText(meetings);
+//                            String meetings = RegistrationService.getAttendMeetings(id);
+//                            scanResult.setText(meetings);
+//                            scanResult.setTextFill(Color.GREEN);
+//                            RegistrationService.scanSuccess(id);
+//                            Wf.this.refreshLabelCount();
+                            scanResult.setText("领取成功!");
                             scanResult.setTextFill(Color.GREEN);
                             RegistrationService.scanSuccess(id);
                             Wf.this.refreshLabelCount();
@@ -822,4 +826,5 @@ public class Wf extends Application {
             RegistrationService.printSuccess(info.getId());
         }
     }
+
 }

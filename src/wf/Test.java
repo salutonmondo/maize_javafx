@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.hsqldb.persist.HsqlProperties;
+import wf.database.DesUtils;
 
 /**
  *
@@ -21,9 +22,15 @@ import org.hsqldb.persist.HsqlProperties;
 public class Test {
 
     public static void main(String[] args) {
-         DBManager dr = new DBManager();
-         dr.startDBServer();
-         dr.getDBConn();
+//         DBManager dr = new DBManager();
+//         dr.startDBServer();
+//         dr.getDBConn();
+        try{
+            DesUtils des = new DesUtils("hbue");
+            System.out.println(des.encrypt("1"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
