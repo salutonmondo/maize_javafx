@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="maize.jnlp">
+  <information>
+    <title>maize</title>
+    <vendor>Yvan WU</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  <shortcut><desktop/></shortcut>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="lib\commons-beanutils-1.8.0.jar" size="231320" download="eager" />
+    <jar href="lib\commons-codec-1.10.jar" size="284184" download="eager" />
+    <jar href="lib\commons-collections-3.2.1.jar" size="575389" download="eager" />
+    <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
+    <jar href="lib\commons-dbcp2-2.1.1.jar" size="174167" download="eager" />
+    <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />
+    <jar href="lib\commons-logging-1.2.jar" size="61829" download="eager" />
+    <jar href="lib\commons-pool2-2.4.2.jar" size="111969" download="eager" />
+    <jar href="lib\core-2.2.jar" size="520331" download="eager" />
+    <jar href="lib\curvesapi-1.04.jar" size="98365" download="eager" />
+    <jar href="lib\hsqldb.jar" size="1515894" download="eager" />
+    <jar href="lib\jasper-compiler-jdt-5.5.15.jar" size="1209873" download="eager" />
+    <jar href="lib\jasperreports-5.5.2.jar" size="4961703" download="eager" />
+    <jar href="lib\jasperreports-fonts-5.5.2.jar" size="2478083" download="eager" />
+    <jar href="lib\javase-2.2.jar" size="39692" download="eager" />
+    <jar href="lib\org-netbeans-modules-java-j2seproject-copylibstask.jar" size="26800" download="eager" />
+    <jar href="lib\pinyin4j-2.5.0.jar" size="188920" download="eager" />
+    <jar href="lib\poi-3.15.jar" size="2579580" download="eager" />
+    <jar href="lib\poi-excelant-3.15.jar" size="31364" download="eager" />
+    <jar href="lib\poi-ooxml-3.15.jar" size="1338241" download="eager" />
+    <jar href="lib\poi-ooxml-schemas-3.15.jar" size="5859007" download="eager" />
+    <jar href="lib\poi-scratchpad-3.15.jar" size="1324935" download="eager" />
+    <jar href="lib\sqltool.jar" size="147929" download="eager" />
+    <jar href="lib\xml-apis-ext.jar" size="85686" download="eager" />
+    <jar href="lib\xml-apis.jar" size="194354" download="eager" />
+    <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+    <jar href="maize.jar" size="1434673" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="maize" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="wf.Wf"  name="maize" />
+  <update check="always"/>
+</jnlp>

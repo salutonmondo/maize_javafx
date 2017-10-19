@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="wf" pageWidth="255" pageHeight="370" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="db1e0978-1ab7-4d6a-a0ab-335db6bbf08b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="pinyin" class="java.lang.String"/>
+	<parameter name="barcode" class="java.io.InputStream"/>
+	<parameter name="fname" class="java.lang.String"/>
+	<parameter name="meetings" class="java.lang.String"/>
+	<parameter name="paid" class="java.lang.String"/>
+	<parameter name="money" class="java.lang.String"/>
+	<parameter name="invoice" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="370">
+			<textField>
+				<reportElement x="28" y="111" width="205" height="59" uuid="fea2c9a6-ea6e-4f0d-b39f-8569196a68a7">
+					<printWhenExpression><![CDATA[!$P{pinyin}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="50"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="177" width="205" height="31" uuid="644d474a-39c7-4dec-965f-f30f572265e3">
+					<printWhenExpression><![CDATA[!$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pinyin}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="88" y="220" width="90" height="90" uuid="c30ccf3a-ac50-4f77-9272-6601923a696f">
+					<printWhenExpression><![CDATA[!$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{barcode}]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="19" y="115" width="235" height="108" uuid="afee9910-c626-44af-93ad-086d1304fc77">
+					<printWhenExpression><![CDATA[$P{pinyin}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="191" width="147" height="32" uuid="3a887561-7bb8-44ca-b7b8-1e10d8d3c622">
+					<printWhenExpression><![CDATA[$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{meetings}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="223" width="147" height="23" uuid="10688738-5b21-4e17-ab7f-364ef1fc18bf">
+					<printWhenExpression><![CDATA[$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{money}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="254" width="147" height="30" uuid="c8cfe150-adce-42ef-923a-36af02db8b37">
+					<printWhenExpression><![CDATA[$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{invoice}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="191" width="78" height="32" uuid="d9173c05-63f1-4fba-8c83-710e8649e8f9">
+					<printWhenExpression><![CDATA[$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[参加会议:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="223" width="78" height="32" uuid="0803e34b-3bf6-4ec6-911d-1c54a622214d">
+					<printWhenExpression><![CDATA[$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[报名费用:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="253" width="78" height="32" uuid="0f2e9444-9ced-41ef-8c84-c1290bb77475">
+					<printWhenExpression><![CDATA[$P{paid}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[发票抬头:]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>
