@@ -604,11 +604,6 @@ public class Wf extends Application {
                         System.out.println("sql::::::" + currentQuery);
                         int result = queryForIntResult(currentQuery);
                         if (result == 1) {
-//                            String meetings = RegistrationService.getAttendMeetings(id);
-//                            scanResult.setText(meetings);
-//                            scanResult.setTextFill(Color.GREEN);
-//                            RegistrationService.scanSuccess(id);
-//                            Wf.this.refreshLabelCount();
                             scanResult.setText("领取成功!");
                             scanResult.setTextFill(Color.GREEN);
                             RegistrationService.scanSuccess(id);
@@ -620,7 +615,7 @@ public class Wf extends Application {
                         barCodeScan.setText("");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        scanResult.setText("领取失败");
+                        scanResult.setText("非法条码！");
                         scanResult.setTextFill(Color.RED);
                         barCodeScan.setText("");
                     }

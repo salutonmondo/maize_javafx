@@ -121,6 +121,13 @@ public class RegisterInfo extends HBox {
             tfValue.setVisible(false);
             sexHbox.setVisible(true);
             sexFemale.setSelected(true);
+            RegisterInfo registerInfo = registerInfoMap.get("报名类型");
+            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("报名类型："+newValue);
+                if(newValue.intValue()==1){
+                    sexMale.setSelected(true);
+                }
+            });
         } else if ("全拼或英文名".equals(name)) {
             TextField nameTf = registerInfoMap.get("姓名").tfValue;
             nameTf.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -146,8 +153,8 @@ public class RegisterInfo extends HBox {
             registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
                 tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null));
             });
-            ChangeListener<Boolean> lis = (ov, old_val, new_val) -> tfValue.setText(
-                    caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, registerInfo.choiceBoxType.getSelectionModel().getSelectedIndex(), registerMeeting.getValue()));
+//            ChangeListener<Boolean> lis = (ov, old_val, new_val) -> tfValue.setText(
+//                    caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, registerInfo.choiceBoxType.getSelectionModel().getSelectedIndex(), registerMeeting.getValue()));
 //            registerMeeting.meeting1.selectedProperty().addListener(lis);
 //            registerMeeting.meeting2.selectedProperty().addListener(lis);
 //            registerMeeting.meeting3.selectedProperty().addListener(lis);
