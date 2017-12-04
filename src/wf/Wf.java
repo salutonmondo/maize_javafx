@@ -184,8 +184,8 @@ public class Wf extends Application {
             ImageView img = new ImageView();
             img.setPreserveRatio(true);
             img.setFitHeight(250);
-            img.setFitWidth(1366);
-            Image image = new Image("wf/logo.jpg", 1366, 250, false, false);
+            img.setFitWidth(1600);
+            Image image = new Image("wf/logo.jpg", 1600, 250, false, false);
             img.setImage(image);
             titleBp.setCenter(img);
             mainBorder1.setMargin(gpInfo, new Insets(15, 0, 0, 0));

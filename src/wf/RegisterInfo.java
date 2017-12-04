@@ -126,6 +126,10 @@ public class RegisterInfo extends HBox {
                 System.out.println("报名类型："+newValue);
                 if(newValue.intValue()==1){
                     sexMale.setSelected(true);
+                    tfValue.setEditable(false);
+                }else{
+                    sexFemale.setSelected(true);
+                    tfValue.setEditable(true);
                 }
             });
         } else if ("全拼或英文名".equals(name)) {
