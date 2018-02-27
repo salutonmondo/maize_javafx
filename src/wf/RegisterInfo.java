@@ -62,7 +62,7 @@ public class RegisterInfo extends HBox {
     public boolean necessary;
 
     int mode;
-    public static String[] typs = new String[]{"普通代表", "免费"};
+    public static String[] typs = new String[]{"普通","VIP", "免费"};
     public static String[] typs1 = new String[]{"现场新增"};
     Reflection anno;
     public RegisterInfo(String name, boolean necessary, HashMap<String, RegisterInfo> registerInfoMap, int currentMode, Wf wf,Reflection anno) {
@@ -86,6 +86,11 @@ public class RegisterInfo extends HBox {
             throw new RuntimeException(exception);
         }
         labelName.setText(name);
+        labelName.setStyle("-fx-font:16 arial;");
+        tfValue.setStyle("-fx-font:16 arial;");
+        choiceBoxType.setStyle("-fx-font:16 arial;");
+        sexMale.setStyle("-fx-font:16 arial;");
+        sexFemale.setStyle("-fx-font:16 arial;");
         if ("性别".equals(name)) {
             tfValue.setVisible(false);
             sexHbox.setVisible(true);
@@ -93,13 +98,13 @@ public class RegisterInfo extends HBox {
             choiceBoxType.setVisible(true);
             choiceBoxType.getSelectionModel().selectFirst();
             tfValue.setVisible(false);
-//            if(currentMode==0){
-//                choiceBoxType.getItems().addAll(typeList1);
-//                choiceBoxType.getSelectionModel().select("现场新增");
-//            }else{
-//                choiceBoxType.getItems().addAll(typeList);
-//                choiceBoxType.getSelectionModel().select("");
-//            }
+            if(currentMode==0){
+                choiceBoxType.getItems().addAll(typeList1);
+                choiceBoxType.getSelectionModel().select("现场新增");
+            }else{
+                choiceBoxType.getItems().addAll(typeList);
+                choiceBoxType.getSelectionModel().select("");
+            }
         } else if ("证件类型".equals(name)) {
             choiceBoxType.setVisible(true);
             choiceBoxType.getItems().addAll(identityType);
@@ -124,7 +129,7 @@ public class RegisterInfo extends HBox {
             RegisterInfo registerInfo = registerInfoMap.get("报名类型");
             registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
                 System.out.println("报名类型："+newValue);
-                if(newValue.intValue()==1){
+                if(newValue.intValue()>=1){
                     sexMale.setSelected(true);
                     tfValue.setEditable(false);
                 }else{
@@ -147,7 +152,7 @@ public class RegisterInfo extends HBox {
                 }
             });
         } else if ("注册费用".equals(name)) {
-            tfValue.setText("1800");
+            tfValue.setText("600");
             if (currentMode == 0) {
                 tfValue.setEditable(false);
             }
@@ -194,7 +199,7 @@ public class RegisterInfo extends HBox {
     private String caculateMoney(boolean mode0, Number registerType, String registeredMeetings) {
         System.out.println("mmmmm:" + registerType.intValue());
         if (0==registerType.intValue()) {
-            return "1800";
+            return "600";
         } else {
             return "0";
         }

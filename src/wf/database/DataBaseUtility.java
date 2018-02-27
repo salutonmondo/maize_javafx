@@ -100,7 +100,7 @@ public class DataBaseUtility {
                 + "性别 VARCHAR(20),年龄 VARCHAR(20),邮箱 varchar(50) ,"
                 + "证件号码 varchar(50),所在城市 varchar(20),"
                 + "邮寄地址 varchar(50),工作单位 varchar(50),"
-                + "职务 varchar(100),职称 varchar(50),发票抬头 varchar(100),"
+                + "职务 varchar(100),职称 varchar(100),发票抬头 varchar(100),"
                 + "pinyin varchar(100),全拼或英文名 varchar(100),证件类型 varchar(50),"
                 + "已领资料 boolean default false,是否付费 varchar(10),已打印胸牌 boolean,"
                 + "会议报名 varchar(30),"

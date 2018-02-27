@@ -210,7 +210,7 @@ public class Wf extends Application {
             mainBorder1.setMargin(gpInfo, new Insets(10, 0, 0, 0));
             titleBp.getTop().setManaged(true);
             titleBp.getTop().setVisible(true);
-            registerInfoMap.get("注册费用").tfValue.setEditable(true);
+//            registerInfoMap.get("注册费用").tfValue.setEditable(true);
         }
         gpInfo.getChildren().clear();
         loadRegistrationInfo(false);
@@ -376,11 +376,13 @@ public class Wf extends Application {
                         }
                     }
                     field.setAccessible(true);
-                    field.set(object, rs.getString(field.getName()));
+                    String fieldName = "职称".equals(field.getName())?"发票抬头":field.getName();
+                    field.set(object, rs.getString(fieldName));
                 }
                 dataList.add(object);
             }
             tableUserInfo.setItems(dataList);
+            tableUserInfo.setStyle("-fx-font:16 arial;");
             tableUserInfo.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             tableUserInfo.setRowFactory(new Callback<TableView<RegistrationInformation>, TableRow<RegistrationInformation>>() {
                 @Override
@@ -421,6 +423,7 @@ public class Wf extends Application {
         TableColumn tableColumn = new TableColumn(name);
         tableColumn.setCellValueFactory(new PropertyValueFactory(name));
         tableColumn.prefWidthProperty().bind(tableUserInfo.widthProperty().multiply(width * 1.0d / 1000));
+        tableColumn.setStyle("");
         tableUserInfo.getColumns().add(tableColumn);
     }
 
@@ -645,37 +648,37 @@ public class Wf extends Application {
     }
 
     public void showHideFields(boolean show) {
-        int gpInfoRowIndex = 0;
-        gpInfo.getChildren().clear();
-        int i = 0;
-        Field[] infoFields = RegistrationInformation.class.getDeclaredFields();
-        for (Field field : infoFields) {
-            String name = field.getName();
-            Reflection anno = field.getAnnotation(Reflection.class);
-            if ("id".equals(name)) {
-//                addUserInfoColumn(name, anno.columWidth());
-                continue;
-            } else if ("arr".equals(name) || "identityType".equals(name)) {
-                continue;
-            }
-            if (anno.dependent() && !show) {
-                continue;
-            }
-            int column = i % gpInfoColumn;
-            int row = i / gpInfoColumn;
-            gpInfoRowIndex = row;
-            if (registerInfoMap.get(name) == null) {
-                continue;
-            }
-            gpInfo.add(registerInfoMap.get(name), column, row);
-            gpInfo.setHgap(15);
-            gpInfo.setVgap(15);
-            i++;
-        }
-        gpInfo.add(saveHbox, 0, gpInfoRowIndex + 1);
-        if (currentMode == 1) {
-            GridPane.setConstraints(saveHbox, 1, gpInfoRowIndex + 1, 2, 1);
-        }
+//        int gpInfoRowIndex = 0;
+//        gpInfo.getChildren().clear();
+//        int i = 0;
+//        Field[] infoFields = RegistrationInformation.class.getDeclaredFields();
+//        for (Field field : infoFields) {
+//            String name = field.getName();
+//            Reflection anno = field.getAnnotation(Reflection.class);
+//            if ("id".equals(name)) {
+////                addUserInfoColumn(name, anno.columWidth());
+//                continue;
+//            } else if ("arr".equals(name) || "identityType".equals(name)) {
+//                continue;
+//            }
+//            if (anno.dependent() && !show) {
+//                continue;
+//            }
+//            int column = i % gpInfoColumn;
+//            int row = i / gpInfoColumn;
+//            gpInfoRowIndex = row;
+//            if (registerInfoMap.get(name) == null) {
+//                continue;
+//            }
+//            gpInfo.add(registerInfoMap.get(name), column, row);
+//            gpInfo.setHgap(15);
+//            gpInfo.setVgap(15);
+//            i++;
+//        }
+//        gpInfo.add(saveHbox, 0, gpInfoRowIndex + 1);
+//        if (currentMode == 1) {
+//            GridPane.setConstraints(saveHbox, 1, gpInfoRowIndex + 1, 2, 1);
+//        }
     }
 
     private void refreshPage() {

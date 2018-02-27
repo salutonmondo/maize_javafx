@@ -14,11 +14,7 @@ public class RegistrationInformation {
      * 必填 发票抬头，类型默认空白,姓名,手机号（加验证）,邮箱(加验证)，注册费用(自动生成),工作单位
      */
     @Reflection(existsInDb = false)
-    public static String[] arr = new String[]{
-            "报名类型", "工作单位", "姓名", "全拼或英文名","性别", "手机号","邮箱","是否付费",
-             "发票抬头", "职务","注册费用"
-            
-    };
+    public static String[] arr = new String[]{"报名类型", "姓名", "性别","工作单位","全拼或英文名", "发票抬头","职务","手机号","邮箱","是否需要学分","是否付费","注册费用"};
 
     @Reflection(existsInDb = false)
     public static String[] identityType = new String[]{"身份证", "军官证", "护照", "MTPS/台胞证"};
@@ -26,9 +22,9 @@ public class RegistrationInformation {
     String 报名类型;
     @Reflection(columWidth = 60, isNecessary = true,display = true)
     String 姓名;
-    @Reflection(columWidth = 100,display = true)
+    @Reflection(columWidth = 100,display = false)
     String 全拼或英文名;
-    @Reflection(columWidth = 50, display = true)
+    @Reflection(columWidth = 50, display = false)
     String 性别;
     @Reflection(columWidth = 100, display = true,isNecessary = true)
     String 手机号;
@@ -58,7 +54,7 @@ public class RegistrationInformation {
     String 发票抬头;
     @Reflection(columWidth = 120, isNecessary = true,display = true)
     String 工作单位;
-    @Reflection(columWidth = 60)
+    @Reflection(columWidth = 60,display=true,isNecessary = true)
     String 是否需要学分;
     @Reflection(columWidth = 30, dependent = true)
     String 职称;
