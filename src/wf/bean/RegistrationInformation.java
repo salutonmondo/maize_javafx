@@ -18,17 +18,17 @@ public class RegistrationInformation {
 
     @Reflection(existsInDb = false)
     public static String[] identityType = new String[]{"身份证", "军官证", "护照", "MTPS/台胞证"};
-    @Reflection(columWidth = 80, isNecessary = true,display = true)
+    @Reflection(columWidth = 80, isNecessary = true,display = true,customNotAloowed = true)
     String 报名类型;
-    @Reflection(columWidth = 60, isNecessary = true,display = true)
+    @Reflection(columWidth = 60, isNecessary = true,display = true,customName = "Name:")
     String 姓名;
     @Reflection(columWidth = 100,display = false)
     String 全拼或英文名;
     @Reflection(columWidth = 50, display = false)
     String 性别;
-    @Reflection(columWidth = 100, display = true,isNecessary = true)
+    @Reflection(columWidth = 100, display = false,isNecessary = false)
     String 手机号;
-    @Reflection(columWidth = 120, isNecessary = true,display = true)
+    @Reflection(columWidth = 120, isNecessary = true,display = true,customName = "Email:")
     String 邮箱;
 //    @Reflection(columWidth = 30)
 //    String 证件类型;
@@ -36,9 +36,9 @@ public class RegistrationInformation {
 //    @Reflection(columWidth = 30)
 //    String 证件号码;
 
-    @Reflection(columWidth = 60, isNecessary = true)
+    @Reflection(columWidth = 60, isNecessary = false)
     String 会议报名;
-    @Reflection(columWidth = 60,display = true)
+    @Reflection(columWidth = 60,display = true,customNotAloowed = true )
     String 注册费用;
 
     @Reflection(columWidth = 60, customNotAloowed = true,display = true)
@@ -50,19 +50,19 @@ public class RegistrationInformation {
     @Reflection(existsInDb = true, columWidth = 30, onlyInTable = true)
     String id;
 
-    @Reflection(columWidth = 60, displayName = "职称",display = true)
+    @Reflection(columWidth = 60, displayName = "职称",display = false)
     String 发票抬头;
-    @Reflection(columWidth = 120, isNecessary = true,display = true)
+    @Reflection(columWidth = 120, isNecessary = true,display = true,customName = "Organization:")
     String 工作单位;
-    @Reflection(columWidth = 60,display=true,isNecessary = true)
+    @Reflection(columWidth = 60,display=false,isNecessary = false)
     String 是否需要学分;
-    @Reflection(columWidth = 30, dependent = true)
+    @Reflection(columWidth = 30, dependent = true,display = false)
     String 职称;
-    @Reflection(columWidth = 30, dependent = true, isNecessary = true)
+    @Reflection(columWidth = 30, dependent = true, isNecessary = true,display = false)
     String 学历;
-    @Reflection(columWidth = 30, dependent = true, display = true)
+    @Reflection(columWidth = 30, dependent = true, display = false)
     String 职务;
-    @Reflection(columWidth = 100)
+    @Reflection(columWidth = 100,display = false)
     String 邮寄地址;
     @Reflection(columWidth = 50, onlyInTable = true)
     String 已领资料;//最后流程

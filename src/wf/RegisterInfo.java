@@ -62,8 +62,8 @@ public class RegisterInfo extends HBox {
     public boolean necessary;
 
     int mode;
-    public static String[] typs = new String[]{"普通","VIP", "免费"};
-    public static String[] typs1 = new String[]{"现场新增"};
+    public static String[] typs = new String[]{"付费","未付费", "新增"};
+    public static String[] typs1 = new String[]{"新增"};
     Reflection anno;
     public RegisterInfo(String name, boolean necessary, HashMap<String, RegisterInfo> registerInfoMap, int currentMode, Wf wf,Reflection anno) {
         System.out.println("____"+name);
@@ -80,6 +80,7 @@ public class RegisterInfo extends HBox {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("itemInfo.fxml"));
         fxmlLoader.setController(this);
         fxmlLoader.setRoot(this);
+//        this.setStyle("-fx-background-color:#87786e;");
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -186,7 +187,7 @@ public class RegisterInfo extends HBox {
         if (!necessary) {
             asterisk.setVisible(false);
         }
-        labelName.setText("".equals(anno.displayName())?name:anno.displayName());
+        System.out.println("currentMode="+currentMode);
     }
 
     private void hideFields(boolean need, HashMap<String, RegisterInfo> registerInfoMap) {

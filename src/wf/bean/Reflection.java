@@ -27,4 +27,5 @@ public @interface Reflection {
     public boolean dependent() default false;
     public boolean display() default false;
     public String displayName() default "";
+    public String customName() default "";
 }

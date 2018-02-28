@@ -3,14 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/WfController.java</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/test/MyCallable.java</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/database/DataBaseUtility.java</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/service/RegistrationService.java</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/poi/PoiUtil.java</file>
+            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/bean/Reflection.java</file>
             <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/Wf.java</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/database/DesUtils.java</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/test/FutureTaskExample.java</file>
             <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/RegisterInfo.java</file>
             <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/maize/src/wf/bean/RegistrationInformation.java</file>
         </group>

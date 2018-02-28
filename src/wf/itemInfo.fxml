@@ -9,58 +9,74 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="638.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="638.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="labelName" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="38.0" prefWidth="360.0" text="name">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <StackPane alignment="CENTER_LEFT">
-         <HBox.margin>
-            <Insets left="15.0" right="10.0" />
-         </HBox.margin>
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="635.0" HBox.hgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" maxWidth="342.0" minWidth="10.0" percentWidth="40.0" prefWidth="322.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="350.0" minWidth="10.0" percentWidth="50.0" prefWidth="296.0" />
+          <ColumnConstraints hgrow="NEVER" maxWidth="95.0" minWidth="10.0" percentWidth="10.0" prefWidth="17.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <TextField fx:id="tfValue" prefHeight="27.0" prefWidth="429.0" stylesheets="@wf.css" />
-            <HBox fx:id="sexHbox" alignment="CENTER_LEFT" visible="false">
+            <Label fx:id="labelName" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="360.0" text="name" GridPane.hgrow="ALWAYS">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <StackPane alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
                <children>
-                  <RadioButton fx:id="sexMale" mnemonicParsing="false" selected="true" text="男">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="groupSex" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="sexFemale" mnemonicParsing="false" text="女" toggleGroup="$groupSex">
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </RadioButton>
+                  <TextField fx:id="tfValue" prefHeight="27.0" prefWidth="283.0" stylesheets="@wf.css" />
+                  <HBox fx:id="sexHbox" alignment="CENTER_LEFT" visible="false">
+                     <children>
+                        <RadioButton fx:id="sexMale" mnemonicParsing="false" selected="true" text="男">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="groupSex" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="sexFemale" mnemonicParsing="false" text="女" toggleGroup="$groupSex">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </RadioButton>
+                     </children>
+                  </HBox>
+                  <ChoiceBox fx:id="choiceBoxType" maxWidth="1.7976931348623157E308" prefWidth="150.0" visible="false" />
+                  <HBox fx:id="meetingWrapper" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <CheckBox fx:id="meeting1" mnemonicParsing="false" text="精神分析大会" />
+                        <CheckBox fx:id="meeting2" mnemonicParsing="false" text="女性委员会">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <CheckBox fx:id="meeting3" mnemonicParsing="false" text="会前工作坊" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
-            <ChoiceBox fx:id="choiceBoxType" maxWidth="1.7976931348623157E308" prefWidth="150.0" visible="false" />
-            <HBox fx:id="meetingWrapper" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" visible="false">
+            </StackPane>
+            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
                <children>
-                  <CheckBox fx:id="meeting1" mnemonicParsing="false" text="精神分析大会" />
-                  <CheckBox fx:id="meeting2" mnemonicParsing="false" text="女性委员会">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </CheckBox>
-                  <CheckBox fx:id="meeting3" mnemonicParsing="false" text="会前工作坊" />
+                  <ImageView fx:id="asterisk" fitHeight="8.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@asterisk.png" />
+                     </image>
+                  </ImageView>
                </children>
             </HBox>
          </children>
-      </StackPane>
-      <ImageView fx:id="asterisk" fitHeight="8.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@asterisk.png" />
-         </image>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </ImageView>
+      </GridPane>
    </children>
 </fx:root>

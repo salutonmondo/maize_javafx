@@ -49,6 +49,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -135,7 +136,7 @@ public class Wf extends Application {
     ScheduledExecutorService executor;
     PrintServiceApp psa;
 
-    int gpInfoColumn = 2;
+    int gpInfoColumn = 1;
 
     int currentMode;
     boolean firstChangeMode = true;
@@ -174,11 +175,13 @@ public class Wf extends Application {
             manipulationHbox.setVisible(false);
             manipulationHbox.setManaged(false);
 
-            gpInfo.getColumnConstraints().get(0).setPercentWidth(50);
-            gpInfo.getColumnConstraints().get(1).setPercentWidth(50);
-            gpInfo.getColumnConstraints().get(2).setPrefWidth(0);
-            gpInfo.getColumnConstraints().get(3).setPrefWidth(0);
-
+//            gpInfo.getColumnConstraints().get(0).setPercentWidth(10);
+//            gpInfo.getColumnConstraints().get(1).setPercentWidth(40);
+//            gpInfo.getColumnConstraints().get(2).setPercentWidth(40);
+//            gpInfo.getColumnConstraints().get(3).setPercentWidth(10);
+//            gpInfo.getColumnConstraints().get(1).setPercentWidth(0);
+//            gpInfo.getColumnConstraints().get(2).setPrefWidth(0);
+//            gpInfo.getColumnConstraints().get(3).setPrefWidth(0);
             gpInfo.setVgap(25);
 
             ImageView img = new ImageView();
@@ -204,8 +207,8 @@ public class Wf extends Application {
 
             gpInfo.getColumnConstraints().get(0).setPercentWidth(25);
             gpInfo.getColumnConstraints().get(1).setPercentWidth(25);
-            gpInfo.getColumnConstraints().get(2).setPrefWidth(25);
-            gpInfo.getColumnConstraints().get(3).setPrefWidth(25);
+            gpInfo.getColumnConstraints().get(2).setPercentWidth(25);
+            gpInfo.getColumnConstraints().get(3).setPercentWidth(25);
 
             mainBorder1.setMargin(gpInfo, new Insets(10, 0, 0, 0));
             titleBp.getTop().setManaged(true);
@@ -249,20 +252,20 @@ public class Wf extends Application {
         ArrayList<String> extraArr = new ArrayList<>();
         extraArr.add("id");
         extraArr.addAll(Arrays.asList(RegistrationInformation.arr));
-        for(String fieldName:extraArr){
+        for (String fieldName : extraArr) {
 //        for (Field field : infoFields) {
             Field field = null;
-            try{
-               field= RegistrationInformation.class.getDeclaredField(fieldName);
-            }catch(Exception e){
+            try {
+                field = RegistrationInformation.class.getDeclaredField(fieldName);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("eeeeeee:"+field);
+            System.out.println("eeeeeee:" + field);
             String name = field.getName();
             Reflection anno = field.getAnnotation(Reflection.class);
             boolean inDb = anno.existsInDb();
             if ("id".equals(name) && !editting) {
-                addUserInfoColumn("".equals(anno.displayName())?name:anno.displayName(), anno.columWidth());
+                addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
                 continue;
             } else if ("arr".equals(name) || "identityType".equals(name)) {
                 continue;
@@ -298,32 +301,54 @@ public class Wf extends Application {
 //                if (anno.dependent()) {
 //                    continue;
 //                }
+                if (currentMode == 0 && !"".equals(anno.customName())) {
+                    regInfo.labelName.setText(anno.customName());
+                } else {
+                    regInfo.labelName.setText("".equals(anno.displayName()) ? name : anno.displayName());
+                }
                 if (currentMode == 0 && anno.customNotAloowed()) {
                     continue;
                 }
+//                if(currentMode==0&&this.gpInfoColumn == 1){
+//                    HBox.setHgrow(regInfo.tfValue, Priority.ALWAYS);
+//                }
                 if (!anno.display()) {
                     continue;
                 }
                 int column = i % gpInfoColumn;
                 int row = i / gpInfoColumn;
+//                if (column == 0) {
+//                    System.out.println("xxxxxx: set background");
+//                    regInfo.setStyle("-fx-background-color: #87786e;");
+//                }
+                if (currentMode == 0) {
+                    GridPane.setColumnSpan(regInfo, 4);
+                } else {
+                    GridPane.setColumnSpan(regInfo, 1);
+                }
                 gpInfo.add(regInfo, column, row);
+
                 gpInfoRowIndex = row;
-                gpInfo.setHgap(15);
+                if (currentMode == 1) {
+                    gpInfo.setHgap(15);
+                }else{
+                     gpInfo.setHgap(25);
+                }
                 gpInfo.setVgap(15);
-                System.out.println("xxxxx:"+row+":"+column);
+                System.out.println("xxxxx:" + row + ":" + column);
                 if (inDb) {
 //                    addUserInfoColumn(name, anno.columWidth());
-                     addUserInfoColumn("".equals(anno.displayName())?name:anno.displayName(), anno.columWidth());
+                    addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
                 }
                 i++;
             }
         }
         if (!editting) {
             gpInfo.add(saveHbox, 0, gpInfoRowIndex + 1);
-            if (currentMode == 1) {
+//            if (currentMode == 1) {
 //                gpInfo.addRow(gpInfoRowIndex + 1);
-                GridPane.setConstraints(saveHbox, 1, gpInfoRowIndex + 1, 2, 1);
-            }
+            GridPane.setConstraints(saveHbox, 1, gpInfoRowIndex + 1, 2, 1);
+//            }
         }
         if (currentMode == 0) {
             registerInfoMap.get("报名类型").choiceBoxType.getItems().addAll(RegisterInfo.typs1);
@@ -338,7 +363,7 @@ public class Wf extends Application {
         if (currentMode == 0) {
             btnAdd.setVisible(false);
             btnAdd.setManaged(false);
-            btnSave.setText("提交注册");
+            btnSave.setText("Sign up");
         } else {
             btnAdd.setVisible(true);
             btnAdd.setManaged(true);
@@ -376,7 +401,7 @@ public class Wf extends Application {
                         }
                     }
                     field.setAccessible(true);
-                    String fieldName = "职称".equals(field.getName())?"发票抬头":field.getName();
+                    String fieldName = "职称".equals(field.getName()) ? "发票抬头" : field.getName();
                     field.set(object, rs.getString(fieldName));
                 }
                 dataList.add(object);
@@ -393,8 +418,7 @@ public class Wf extends Application {
                         public void handle(MouseEvent event) {
                             final int index = row.getIndex();
                             if (index >= 0 && index < tableUserInfo.getItems().size() && tableUserInfo.getSelectionModel().isSelected(index)
-                                    && !event.isSecondaryButtonDown()
-                                    ) {
+                                    && !event.isSecondaryButtonDown()) {
                                 tableUserInfo.getSelectionModel().clearSelection();
                                 event.consume();
                             }
@@ -416,6 +440,7 @@ public class Wf extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+//        Locale.setDefault(Locale.ENGLISH);
         launch(args);
     }
 
@@ -479,9 +504,9 @@ public class Wf extends Application {
                         boolean result = service.saveRegisterInfos(RegistrationInformation.class, registerInfoMap, null);
                         if (result) {
                             Alert alert = new Alert(AlertType.INFORMATION);
-                            alert.setTitle("注册成功");
+                            alert.setTitle("Success");
                             alert.setHeaderText(null);
-                            alert.setContentText("恭喜您,注册成功!");
+                            alert.setContentText("Sign up success!");
                             alert.showAndWait();
                         }
                     } else {
@@ -643,7 +668,7 @@ public class Wf extends Application {
 
     private void printRegInfo(final RegistrationInformation regInfo) {
         Platform.runLater(() -> {
-              psa.printOrder(regInfo);
+            psa.printOrder(regInfo);
         });
     }
 
