@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="638.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="638.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="635.0" HBox.hgrow="ALWAYS">
+      <GridPane fx:id="itemGp" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="635.0" HBox.hgrow="ALWAYS">
         <columnConstraints>
           <ColumnConstraints hgrow="NEVER" maxWidth="342.0" minWidth="10.0" percentWidth="40.0" prefWidth="322.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="350.0" minWidth="10.0" percentWidth="50.0" prefWidth="296.0" />
@@ -62,6 +62,11 @@
                         <CheckBox fx:id="meeting3" mnemonicParsing="false" text="会前工作坊" />
                      </children>
                   </HBox>
+                  <Label fx:id="tag" textFill="#ee3704" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </StackPane>
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">

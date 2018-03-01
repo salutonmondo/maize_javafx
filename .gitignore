@@ -1,5 +1,8 @@
 build
 dist
+out
 *.class
 *.rar
 *.zip
+*.iml
+.idea

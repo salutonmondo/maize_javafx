@@ -323,8 +323,14 @@ public class Wf extends Application {
 //                }
                 if (currentMode == 0) {
                     GridPane.setColumnSpan(regInfo, 4);
+                    regInfo.itemGp.getColumnConstraints().get(0).setPercentWidth(30);
+                    regInfo.itemGp.getColumnConstraints().get(1).setPercentWidth(40);
+                    regInfo.itemGp.getColumnConstraints().get(2).setPercentWidth(30);
                 } else {
                     GridPane.setColumnSpan(regInfo, 1);
+                    regInfo.itemGp.getColumnConstraints().get(0).setPrefWidth(120);
+                    regInfo.itemGp.getColumnConstraints().get(1).setPercentWidth(100);
+                    regInfo.itemGp.getColumnConstraints().get(2).setPrefWidth(50);
                 }
                 gpInfo.add(regInfo, column, row);
 
@@ -341,6 +347,9 @@ public class Wf extends Application {
                     addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
                 }
                 i++;
+            }
+            if(currentMode==1){
+                setTagMonitor();
             }
         }
         if (!editting) {
@@ -369,7 +378,6 @@ public class Wf extends Application {
             btnAdd.setManaged(true);
             btnSave.setText("保存");
         }
-
     }
 
     private Node loadRegistration(String searchString, int page) {
@@ -409,23 +417,22 @@ public class Wf extends Application {
             tableUserInfo.setItems(dataList);
             tableUserInfo.setStyle("-fx-font:16 arial;");
             tableUserInfo.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-            tableUserInfo.setRowFactory(new Callback<TableView<RegistrationInformation>, TableRow<RegistrationInformation>>() {
-                @Override
-                public TableRow<RegistrationInformation> call(TableView<RegistrationInformation> tableView2) {
-                    final TableRow<RegistrationInformation> row = new TableRow<>();
-                    row.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            final int index = row.getIndex();
-                            if (index >= 0 && index < tableUserInfo.getItems().size() && tableUserInfo.getSelectionModel().isSelected(index)
-                                    && !event.isSecondaryButtonDown()) {
-                                tableUserInfo.getSelectionModel().clearSelection();
-                                event.consume();
-                            }
-                        }
-                    });
-                    return row;
+
+            tableUserInfo.setRowFactory((Callback<TableView<RegistrationInformation>, TableRow<RegistrationInformation>>) tableView2 -> {
+                final TableRow<RegistrationInformation> row = new TableRow<>();
+                row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                    final int index = row.getIndex();
+                    if (index >= 0 && index < tableUserInfo.getItems().size() && tableUserInfo.getSelectionModel().isSelected(index)
+                            && !event.isSecondaryButtonDown()) {
+                        tableUserInfo.getSelectionModel().clearSelection();
+                        event.consume();
+                    }
+                });
+                if(row.getIndex()!=-1){
+                    RegistrationInformation regInfo = (RegistrationInformation) tableUserInfo.getItems().get(row.getIndex());
+                    System.out.println("ccccc:"+regInfo.get姓名());
                 }
+                return row;
             });
             conn.close();
             return new BorderPane(tableUserInfo);
@@ -846,8 +853,43 @@ public class Wf extends Application {
         for (RegistrationInformation info : regInfos) {
             printRegInfo(info);
             Wf.this.refreshLabelCount();
+            if("晚宴".equals(info.get发票抬头())){
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("发晚宴卡提醒");
+                alert.setHeaderText(null);
+                alert.setContentText("请给"+info.get姓名()+"发晚宴卡");
+                alert.showAndWait();
+            }
             RegistrationService.printSuccess(info.getId());
         }
     }
 
+
+    private <T> TableColumn<T, ?> getTableColumnByName(TableView<T> tableView, String name) {
+        for (TableColumn<T, ?> col : tableView.getColumns())
+            if (col.getText().equals(name)) return col ;
+        return null ;
+    }
+
+    private void setTagMonitor(){
+        TableColumn dinnerColumn = getTableColumnByName(tableUserInfo,"晚宴");
+        dinnerColumn.setCellFactory((column)->{
+            return new TableCell<RegistrationInformation, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? "晚宴" : getItem().toString());
+                    setGraphic(null);
+                    TableRow<RegistrationInformation> currentRow = getTableRow();
+                    if (!isEmpty()) {
+                        int index = currentRow.getIndex();
+                        if(item.equals("dd")){
+                            currentRow.setStyle("-fx-background-color:lightcoral");
+                            currentRow.getStyleClass().add("hight-light-row");
+                        }
+                    }
+                }
+            };
+        });
+    }
 }

@@ -50,7 +50,7 @@ public class RegistrationInformation {
     @Reflection(existsInDb = true, columWidth = 30, onlyInTable = true)
     String id;
 
-    @Reflection(columWidth = 60, displayName = "职称",display = false)
+    @Reflection(columWidth = 60, displayName = "晚宴",display = true,customNotAloowed = true)
     String 发票抬头;
     @Reflection(columWidth = 120, isNecessary = true,display = true,customName = "Organization:")
     String 工作单位;

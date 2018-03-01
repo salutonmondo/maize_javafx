@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import wf.bean.Reflection;
 import wf.database.Pinyin;
@@ -51,6 +52,12 @@ public class RegisterInfo extends HBox {
     HBox meetingWrapper;
 
     @FXML
+    Label tag;
+
+    @FXML
+    GridPane itemGp;
+
+    @FXML
     CheckBox meeting1;
 
     @FXML
@@ -62,7 +69,7 @@ public class RegisterInfo extends HBox {
     public boolean necessary;
 
     int mode;
-    public static String[] typs = new String[]{"付费","未付费", "新增"};
+    public static String[] typs = new String[]{"未付费", "付费","新增"};
     public static String[] typs1 = new String[]{"新增"};
     Reflection anno;
     public RegisterInfo(String name, boolean necessary, HashMap<String, RegisterInfo> registerInfoMap, int currentMode, Wf wf,Reflection anno) {
@@ -163,11 +170,6 @@ public class RegisterInfo extends HBox {
             registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
                 tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null));
             });
-//            ChangeListener<Boolean> lis = (ov, old_val, new_val) -> tfValue.setText(
-//                    caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, registerInfo.choiceBoxType.getSelectionModel().getSelectedIndex(), registerMeeting.getValue()));
-//            registerMeeting.meeting1.selectedProperty().addListener(lis);
-//            registerMeeting.meeting2.selectedProperty().addListener(lis);
-//            registerMeeting.meeting3.selectedProperty().addListener(lis);
         } else if ("会议报名".equals(name)) {
             tfValue.setVisible(false);
             meetingWrapper.setVisible(true);
@@ -199,10 +201,10 @@ public class RegisterInfo extends HBox {
 
     private String caculateMoney(boolean mode0, Number registerType, String registeredMeetings) {
         System.out.println("mmmmm:" + registerType.intValue());
-        if (0==registerType.intValue()) {
-            return "600";
-        } else {
+        if (1==registerType.intValue()) {
             return "0";
+        } else {
+            return "5000";
         }
     }
 
