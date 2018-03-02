@@ -151,6 +151,11 @@ public class RegistrationService {
         return true;
     }
 
+    public static boolean dinnerCardGiveSuccess(String id){
+        String sql = "update registration set 发票抬头 = '晚宴-已发' where id='" + id + "'";
+        return executeSql(sql);
+    }
+
     public static boolean scanSuccess(String id) {
         String sql = "update registration set 已领资料 = true where id='" + id + "'";
         return executeSql(sql);

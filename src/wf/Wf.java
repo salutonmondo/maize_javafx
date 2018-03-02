@@ -265,7 +265,8 @@ public class Wf extends Application {
             Reflection anno = field.getAnnotation(Reflection.class);
             boolean inDb = anno.existsInDb();
             if ("id".equals(name) && !editting) {
-                addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
+//                addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
+                addUserInfoColumn(name, anno.columWidth());
                 continue;
             } else if ("arr".equals(name) || "identityType".equals(name)) {
                 continue;
@@ -343,14 +344,14 @@ public class Wf extends Application {
                 gpInfo.setVgap(15);
                 System.out.println("xxxxx:" + row + ":" + column);
                 if (inDb) {
-//                    addUserInfoColumn(name, anno.columWidth());
-                    addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
+                    addUserInfoColumn(name, anno.columWidth());
+//                    addUserInfoColumn("".equals(anno.displayName()) ? name : anno.displayName(), anno.columWidth());
                 }
                 i++;
             }
-            if(currentMode==1){
-                setTagMonitor();
-            }
+        }
+        if(currentMode==1){
+            setTagMonitor();
         }
         if (!editting) {
             gpInfo.add(saveHbox, 0, gpInfoRowIndex + 1);
@@ -409,7 +410,8 @@ public class Wf extends Application {
                         }
                     }
                     field.setAccessible(true);
-                    String fieldName = "职称".equals(field.getName()) ? "发票抬头" : field.getName();
+//                    String fieldName = "职称".equals(field.getName()) ? "发票抬头" : field.getName();
+                    String fieldName = field.getName();
                     field.set(object, rs.getString(fieldName));
                 }
                 dataList.add(object);
@@ -674,9 +676,7 @@ public class Wf extends Application {
     }
 
     private void printRegInfo(final RegistrationInformation regInfo) {
-        Platform.runLater(() -> {
-            psa.printOrder(regInfo);
-        });
+        Platform.runLater(() -> psa.printOrder(regInfo));
     }
 
     public void showHideFields(boolean show) {
@@ -787,11 +787,14 @@ public class Wf extends Application {
         String totalQuery = "select count(id) from registration";
         String getPaperSql = "select count(id) from registration where 已领资料 = true ";
         String printedSql = "select count(id) from registration where 已打印胸牌 = true ";
+        String dinnerSqlTotal = "select count(id) from registration where 发票抬头 like '晚宴%'";
+        String dinnerSqlGive = "select count(id) from registration where 发票抬头 = '晚宴-已发'";
         total = queryForIntResult(totalQuery);
         getPaper = queryForIntResult(getPaperSql);
         printed = queryForIntResult(printedSql);
-        Platform.runLater(() -> labelCount.setText("已领资料:" + getPaper + "  已打印:" + printed + "   总人数:" + total));
-
+        int dinnerCardCount = queryForIntResult(dinnerSqlTotal);
+        int dinnerCardGiveCount = queryForIntResult(dinnerSqlGive);
+        Platform.runLater(() -> labelCount.setText("已领资料:" + getPaper + "  已打印:" + printed + "   总人数:" + total+"    晚宴:"+dinnerCardGiveCount+"/"+dinnerCardCount));
     }
 
     private int queryForIntResult(String countString) {
@@ -851,15 +854,21 @@ public class Wf extends Application {
         psa = new PrintServiceApp();
         List<RegistrationInformation> regInfos = (List<RegistrationInformation>) tableUserInfo.getSelectionModel().getSelectedItems();
         for (RegistrationInformation info : regInfos) {
-            printRegInfo(info);
-            Wf.this.refreshLabelCount();
+//            printRegInfo(info);
             if("晚宴".equals(info.get发票抬头())){
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("发晚宴卡提醒");
                 alert.setHeaderText(null);
                 alert.setContentText("请给"+info.get姓名()+"发晚宴卡");
                 alert.showAndWait();
+                boolean giveSuccess = RegistrationService.dinnerCardGiveSuccess(info.getId());
+                if(giveSuccess){
+                    info.set发票抬头("晚宴-已发");
+                }
             }
+            Wf.this.refreshLabelCount();
+            ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(false);
+            ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(true);
             RegistrationService.printSuccess(info.getId());
         }
     }
@@ -871,25 +880,27 @@ public class Wf extends Application {
         return null ;
     }
 
-    private void setTagMonitor(){
-        TableColumn dinnerColumn = getTableColumnByName(tableUserInfo,"晚宴");
-        dinnerColumn.setCellFactory((column)->{
-            return new TableCell<RegistrationInformation, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setText(empty ? "晚宴" : getItem().toString());
-                    setGraphic(null);
-                    TableRow<RegistrationInformation> currentRow = getTableRow();
-                    if (!isEmpty()) {
-                        int index = currentRow.getIndex();
-                        if(item.equals("dd")){
-                            currentRow.setStyle("-fx-background-color:lightcoral");
-                            currentRow.getStyleClass().add("hight-light-row");
-                        }
+    private void setTagMonitor() {
+        TableColumn dinnerColumn = getTableColumnByName(tableUserInfo, "发票抬头");
+        dinnerColumn.setCellFactory((column) -> new TableCell<RegistrationInformation, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                System.out.println("--------------"+item);
+                TableColumn<RegistrationInformation,String> tableColumn = (TableColumn)column;
+                setText(empty ? "" : item.toString());
+                tableColumn.setText("晚宴");
+                setGraphic(null);
+                TableRow<RegistrationInformation> currentRow = getTableRow();
+                if (!isEmpty()) {
+                    currentRow.getStyleClass().removeAll("hight-light-row","hight-light-row-green");
+                    if ("晚宴".equals(item)) {
+                        currentRow.getStyleClass().add("hight-light-row");
+                    }else if("晚宴-已发".equals(item)){
+                        currentRow.getStyleClass().add("hight-light-row-green");
                     }
                 }
-            };
+            }
         });
     }
 }

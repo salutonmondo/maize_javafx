@@ -185,6 +185,9 @@ public class RegisterInfo extends HBox {
             }
             ChangeListener<Boolean> lis = (ov, old_val, new_val) -> hideFields(new_val, registerInfoMap);
             sexMale.selectedProperty().addListener(lis);
+        }else if("发票抬头".equals(name)){
+            tfValue.setVisible(false);
+            tag.setVisible(true);
         }
         if (!necessary) {
             asterisk.setVisible(false);
@@ -257,7 +260,8 @@ public class RegisterInfo extends HBox {
             meeting1.setSelected(false);
             meeting2.setSelected(false);
             meeting3.setSelected(false);
-        } else {
+        }
+        else {
             tfValue.setText("");
         }
     }
@@ -298,7 +302,10 @@ public class RegisterInfo extends HBox {
             } else {
                 groupSex.selectToggle(sexFemale);
             }
-        } else {
+        }else if("发票抬头".equals(name)){
+            tag.setText(value);
+        }
+        else {
             tfValue.setText(value);
         }
     }
