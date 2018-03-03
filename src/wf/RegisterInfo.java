@@ -42,9 +42,9 @@ public class RegisterInfo extends HBox {
     ToggleGroup groupSex;
 
     @FXML
-    RadioButton sexMale;
+    RadioButton sexMale,feeBoxPaid;
     @FXML
-    RadioButton sexFemale;
+    RadioButton sexFemale,feeBoxUnpaid;
     @FXML
     ChoiceBox choiceBoxType;
 
@@ -67,9 +67,8 @@ public class RegisterInfo extends HBox {
     CheckBox meeting3;
 
     public boolean necessary;
-
     int mode;
-    public static String[] typs = new String[]{"未付费", "付费","新增"};
+    public static String[] typs = new String[]{"未付费", "付费","新增","学生","应物所"};
     public static String[] typs1 = new String[]{"新增"};
     Reflection anno;
     public RegisterInfo(String name, boolean necessary, HashMap<String, RegisterInfo> registerInfoMap, int currentMode, Wf wf,Reflection anno) {
@@ -106,13 +105,6 @@ public class RegisterInfo extends HBox {
             choiceBoxType.setVisible(true);
             choiceBoxType.getSelectionModel().selectFirst();
             tfValue.setVisible(false);
-            if(currentMode==0){
-                choiceBoxType.getItems().addAll(typeList1);
-                choiceBoxType.getSelectionModel().select("现场新增");
-            }else{
-                choiceBoxType.getItems().addAll(typeList);
-                choiceBoxType.getSelectionModel().select("");
-            }
         } else if ("证件类型".equals(name)) {
             choiceBoxType.setVisible(true);
             choiceBoxType.getItems().addAll(identityType);
@@ -130,21 +122,14 @@ public class RegisterInfo extends HBox {
             tfValue.setVisible(false);
         } else if ("是否付费".equals(name)) {
             sexMale.setText("是");
+            feeBoxPaid = sexMale;
             sexFemale.setText("否");
             tfValue.setVisible(false);
             sexHbox.setVisible(true);
             sexFemale.setSelected(true);
+            feeBoxUnpaid = sexFemale;
             RegisterInfo registerInfo = registerInfoMap.get("报名类型");
-            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-                System.out.println("报名类型："+newValue);
-                if(newValue.intValue()>=1){
-                    sexMale.setSelected(true);
-                    tfValue.setEditable(false);
-                }else{
-                    sexFemale.setSelected(true);
-                    tfValue.setEditable(true);
-                }
-            });
+            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null)));
         } else if ("全拼或英文名".equals(name)) {
             TextField nameTf = registerInfoMap.get("姓名").tfValue;
             nameTf.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -160,31 +145,29 @@ public class RegisterInfo extends HBox {
                 }
             });
         } else if ("注册费用".equals(name)) {
-            tfValue.setText("600");
+            tfValue.setText("5600");
             if (currentMode == 0) {
                 tfValue.setEditable(false);
             }
             RegisterInfo registerInfo = registerInfoMap.get("报名类型");
             RegisterInfo registerMeeting = registerInfoMap.get("会议报名");
 
-            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-                tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null));
-            });
+            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null)));
         } else if ("会议报名".equals(name)) {
             tfValue.setVisible(false);
             meetingWrapper.setVisible(true);
         } else if ("是否需要学分".equals(name)) {
-            sexMale.setText("是");
-            sexFemale.setText("否");
-            tfValue.setVisible(false);
-            sexHbox.setVisible(true);
-            if (wf.needPoint) {
-                sexMale.setSelected(true);
-            } else {
-                sexFemale.setSelected(true);
-            }
-            ChangeListener<Boolean> lis = (ov, old_val, new_val) -> hideFields(new_val, registerInfoMap);
-            sexMale.selectedProperty().addListener(lis);
+//            sexMale.setText("是");
+//            sexFemale.setText("否");
+//            tfValue.setVisible(false);
+//            sexHbox.setVisible(true);
+//            if (wf.needPoint) {
+//                sexMale.setSelected(true);
+//            } else {
+//                sexFemale.setSelected(true);
+//            }
+//            ChangeListener<Boolean> lis = (ov, old_val, new_val) -> hideFields(new_val, registerInfoMap);
+//            sexMale.selectedProperty().addListener(lis);
         }else if("发票抬头".equals(name)){
             tfValue.setVisible(false);
             tag.setVisible(true);
@@ -204,10 +187,15 @@ public class RegisterInfo extends HBox {
 
     private String caculateMoney(boolean mode0, Number registerType, String registeredMeetings) {
         System.out.println("mmmmm:" + registerType.intValue());
-        if (1==registerType.intValue()) {
+        if (0==registerType.intValue()||2==registerType.intValue()) {
+            feeBoxUnpaid.setSelected(true);
+            return "5600";
+        } else if(3==registerType.intValue()) {
+            feeBoxUnpaid.setSelected(true);
+            return "2000";
+        }else{
+            feeBoxPaid.setSelected(true);
             return "0";
-        } else {
-            return "5000";
         }
     }
 

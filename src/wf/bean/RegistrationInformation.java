@@ -18,7 +18,7 @@ public class RegistrationInformation {
 
     @Reflection(existsInDb = false)
     public static String[] identityType = new String[]{"身份证", "军官证", "护照", "MTPS/台胞证"};
-    @Reflection(columWidth = 80, isNecessary = true,display = true,customNotAloowed = true)
+    @Reflection(columWidth = 80, isNecessary = true,display = true,customNotAloowed = false)
     String 报名类型;
     @Reflection(columWidth = 60, isNecessary = true,display = true,customName = "Name:")
     String 姓名;

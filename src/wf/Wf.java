@@ -361,14 +361,15 @@ public class Wf extends Application {
 //            }
         }
         if (currentMode == 0) {
+            registerInfoMap.get("报名类型").choiceBoxType.getItems().clear();
             registerInfoMap.get("报名类型").choiceBoxType.getItems().addAll(RegisterInfo.typs1);
-            registerInfoMap.get("报名类型").choiceBoxType.getSelectionModel().select("现场新增");
+            registerInfoMap.get("报名类型").choiceBoxType.getSelectionModel().select(0);
         } else if (firstChangeMode) {
             firstChangeMode = false;
             RegisterInfo regInfo = registerInfoMap.get("报名类型");
             regInfo.choiceBoxType.getItems().clear();
             regInfo.choiceBoxType.getItems().addAll(RegisterInfo.typs);
-            regInfo.choiceBoxType.getSelectionModel().select(regInfo.getValue());
+            regInfo.choiceBoxType.getSelectionModel().select(2);
         }
         if (currentMode == 0) {
             btnAdd.setVisible(false);
@@ -437,11 +438,14 @@ public class Wf extends Application {
                 return row;
             });
             conn.close();
+            setTagMonitor();
+            renderTableView();
             return new BorderPane(tableUserInfo);
         } catch (Exception ex) {
             Logger.getLogger(Wf.class.getName()).log(Level.SEVERE, null, ex);
             LogUtil.log(ex.getMessage());
         }
+        renderTableView();
         return null;
     }
 
@@ -854,7 +858,7 @@ public class Wf extends Application {
         psa = new PrintServiceApp();
         List<RegistrationInformation> regInfos = (List<RegistrationInformation>) tableUserInfo.getSelectionModel().getSelectedItems();
         for (RegistrationInformation info : regInfos) {
-//            printRegInfo(info);
+            printRegInfo(info);
             if("晚宴".equals(info.get发票抬头())){
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("发晚宴卡提醒");
@@ -867,8 +871,7 @@ public class Wf extends Application {
                 }
             }
             Wf.this.refreshLabelCount();
-            ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(false);
-            ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(true);
+            renderTableView();
             RegistrationService.printSuccess(info.getId());
         }
     }
@@ -881,8 +884,9 @@ public class Wf extends Application {
     }
 
     private void setTagMonitor() {
-        TableColumn dinnerColumn = getTableColumnByName(tableUserInfo, "发票抬头");
-        dinnerColumn.setCellFactory((column) -> new TableCell<RegistrationInformation, String>() {
+        TableColumn c1 = getTableColumnByName(tableUserInfo, "发票抬头");
+        TableColumn c2 = getTableColumnByName(tableUserInfo, "晚宴");
+        Callback cb = ((column) -> new TableCell<RegistrationInformation, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -898,9 +902,22 @@ public class Wf extends Application {
                         currentRow.getStyleClass().add("hight-light-row");
                     }else if("晚宴-已发".equals(item)){
                         currentRow.getStyleClass().add("hight-light-row-green");
+                    }else{
+                        currentRow.getStyleClass().removeAll("hight-light-row","hight-light-row-green");
                     }
                 }
             }
         });
+        if(c1!=null){
+            c1.setCellFactory(cb);
+        }
+        if(c2!=null){
+            c2.setCellFactory(cb);
+        }
+    }
+
+    private void renderTableView(){
+        ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(false);
+        ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(true);
     }
 }
