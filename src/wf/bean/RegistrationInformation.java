@@ -18,7 +18,7 @@ public class RegistrationInformation {
 
     @Reflection(existsInDb = false)
     public static String[] identityType = new String[]{"身份证", "军官证", "护照", "MTPS/台胞证"};
-    @Reflection(columWidth = 80, isNecessary = true,display = true,customNotAloowed = false)
+    @Reflection(columWidth = 80, isNecessary = true,display = true,customNotAloowed = true)
     String 报名类型;
     @Reflection(columWidth = 60, isNecessary = true,display = true,customName = "Name:")
     String 姓名;
@@ -52,7 +52,7 @@ public class RegistrationInformation {
 
     @Reflection(columWidth = 60, displayName = "晚宴",display = true,customNotAloowed = true)
     String 发票抬头;
-    @Reflection(columWidth = 120, isNecessary = true,display = true,customName = "Organization:")
+    @Reflection(columWidth = 120, isNecessary = true,display = true,customName = "Affiliation:")
     String 工作单位;
     @Reflection(columWidth = 60,display=false,isNecessary = false)
     String 是否需要学分;
@@ -60,7 +60,7 @@ public class RegistrationInformation {
     String 职称;
     @Reflection(columWidth = 30, dependent = true, isNecessary = true,display = false)
     String 学历;
-    @Reflection(columWidth = 30, dependent = true, display = false)
+    @Reflection(columWidth = 30, dependent = false, display = true,customName="Affiliation Abbrev:",isNecessary = true,displayName = "单位简称")
     String 职务;
     @Reflection(columWidth = 100,display = false)
     String 邮寄地址;

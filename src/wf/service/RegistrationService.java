@@ -79,10 +79,12 @@ public class RegistrationService {
             if (userName == null) {
                 return;
             }
-
+            if(value!=null){
+                    value = value.replaceAll("'", "''");
+            }
             sb.append(",'").append(value).append("'");
         }
-        sb.append(",'").append(Pinyin.getPinYinHeadChar(userName)).append("'");
+        sb.append(",'").append(Pinyin.getPinYinHeadChar(userName).replaceAll("'", "''")).append("'");
         sb.append(")");
         Statement stm = conn.createStatement();
 

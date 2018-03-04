@@ -48,6 +48,9 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.HashPrintServiceAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.MediaPrintableArea;
+import javax.print.attribute.standard.MediaSize;
+import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PrinterName;
 
 import net.sf.jasperreports.engine.JRException;
@@ -187,6 +190,13 @@ public class PrintServiceApp {
                     }else if(tmp.equals("报名类型")){
                         tmp = "regType";
                         parameters.put(tmp, field.get(regInfo).toString());
+                    }else if(tmp.equals("工作单位")){
+                        tmp = "company";
+                        parameters.put(tmp, field.get(regInfo).toString());
+                    }else if(tmp.equals("职务")){
+                        tmp = "abbrev";
+                        System.out.println("abbrev!!!"+field.get(regInfo).toString());
+                        parameters.put(tmp, field.get(regInfo).toString());
                     }
                 }
 //            } 
@@ -237,9 +247,10 @@ public class PrintServiceApp {
     public void print() throws JRException {
         long start = System.currentTimeMillis();
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-//        printRequestAttributeSet.add(MediaSizeName.ISO_A4);
-        // printRequestAttributeSet.add(new MediaPrintableArea(5, 5, 58, 500,
-        // MediaPrintableArea.MM));
+//        MediaSize ms = new MediaSize(90, 128, MediaSize.MM, MediaSizeName.A);
+//        printRequestAttributeSet.add(ms);
+//         printRequestAttributeSet.add(new MediaPrintableArea(90, 128, 90, 128,
+//         MediaPrintableArea.MM));
         PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
         printServiceAttributeSet.add(new PrinterName("Argox CP-2140M PPLB", null));
         // printServiceAttributeSet.add(new

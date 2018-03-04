@@ -68,10 +68,18 @@ public class RegisterInfo extends HBox {
 
     public boolean necessary;
     int mode;
-    public static String[] typs = new String[]{"未付费", "付费","新增","学生","应物所"};
-    public static String[] typs1 = new String[]{"新增"};
+    
+    public static String[] typs = new String[]{"新增","普通代表", "学生","免费"};
+    public static String[] typs1 = new String[]{"新增","普通代表"};
     Reflection anno;
+    RegisterInfo registerInfo;
+     HashMap<String, RegisterInfo> registerInfoMap;
     public RegisterInfo(String name, boolean necessary, HashMap<String, RegisterInfo> registerInfoMap, int currentMode, Wf wf,Reflection anno) {
+        registerInfo = registerInfoMap.get("报名类型");
+        this.registerInfoMap = registerInfoMap;
+        if(registerInfo!=null){
+            this.listener = (observable, oldValue, newValue) -> caculateMoney(1 == registerInfo.choiceBoxType.getItems().size(), (Number) newValue, null);
+        }
         System.out.println("____"+name);
         this.anno = anno;
         this.wf = wf;
@@ -129,7 +137,7 @@ public class RegisterInfo extends HBox {
             sexFemale.setSelected(true);
             feeBoxUnpaid = sexFemale;
             RegisterInfo registerInfo = registerInfoMap.get("报名类型");
-            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null)));
+            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener(listener);
         } else if ("全拼或英文名".equals(name)) {
             TextField nameTf = registerInfoMap.get("姓名").tfValue;
             nameTf.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -151,8 +159,7 @@ public class RegisterInfo extends HBox {
             }
             RegisterInfo registerInfo = registerInfoMap.get("报名类型");
             RegisterInfo registerMeeting = registerInfoMap.get("会议报名");
-
-            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> tfValue.setText(caculateMoney(registerInfo.choiceBoxType.getItems().size() == 1, newValue, null)));
+            registerInfo.choiceBoxType.getSelectionModel().selectedIndexProperty().addListener(listener);
         } else if ("会议报名".equals(name)) {
             tfValue.setVisible(false);
             meetingWrapper.setVisible(true);
@@ -187,13 +194,20 @@ public class RegisterInfo extends HBox {
 
     private String caculateMoney(boolean mode0, Number registerType, String registeredMeetings) {
         System.out.println("mmmmm:" + registerType.intValue());
-        if (0==registerType.intValue()||2==registerType.intValue()) {
+        RegisterInfo feeInfo = registerInfoMap.get("注册费用");
+        if (0==registerType.intValue()||1==registerType.intValue()) {
+            if(feeBoxUnpaid!=null)
             feeBoxUnpaid.setSelected(true);
+            feeInfo.tfValue.setText("5600");
             return "5600";
-        } else if(3==registerType.intValue()) {
+        } else if(2==registerType.intValue()) {
+            if(feeBoxUnpaid!=null)
             feeBoxUnpaid.setSelected(true);
-            return "2000";
+            feeInfo.tfValue.setText("2500");
+            return "2500";
         }else{
+            feeInfo.tfValue.setText("0");
+            if(feeBoxPaid!=null)
             feeBoxPaid.setSelected(true);
             return "0";
         }
@@ -230,7 +244,10 @@ public class RegisterInfo extends HBox {
                 sb.append(",3");
             }
             return sb.toString();
-        } else {
+        }else if("发票抬头".equals(name)){
+            value = tag.getText();
+        } 
+        else {
             value = tfValue.getText();
         }
         return value;
@@ -298,6 +315,7 @@ public class RegisterInfo extends HBox {
         }
     }
 
+    
     public boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
@@ -311,5 +329,7 @@ public class RegisterInfo extends HBox {
         Matcher m = p.matcher(str);
         return m.matches();
     }
+    
+    ChangeListener listener;
 
 }

@@ -329,8 +329,8 @@ public class Wf extends Application {
                     regInfo.itemGp.getColumnConstraints().get(2).setPercentWidth(30);
                 } else {
                     GridPane.setColumnSpan(regInfo, 1);
-                    regInfo.itemGp.getColumnConstraints().get(0).setPrefWidth(120);
-                    regInfo.itemGp.getColumnConstraints().get(1).setPercentWidth(100);
+                    regInfo.itemGp.getColumnConstraints().get(0).setPercentWidth(30);
+                    regInfo.itemGp.getColumnConstraints().get(1).setPercentWidth(70);
                     regInfo.itemGp.getColumnConstraints().get(2).setPrefWidth(50);
                 }
                 gpInfo.add(regInfo, column, row);
@@ -338,8 +338,8 @@ public class Wf extends Application {
                 gpInfoRowIndex = row;
                 if (currentMode == 1) {
                     gpInfo.setHgap(15);
-                }else{
-                     gpInfo.setHgap(25);
+                } else {
+                    gpInfo.setHgap(25);
                 }
                 gpInfo.setVgap(15);
                 System.out.println("xxxxx:" + row + ":" + column);
@@ -350,7 +350,7 @@ public class Wf extends Application {
                 i++;
             }
         }
-        if(currentMode==1){
+        if (currentMode == 1) {
             setTagMonitor();
         }
         if (!editting) {
@@ -369,7 +369,7 @@ public class Wf extends Application {
             RegisterInfo regInfo = registerInfoMap.get("报名类型");
             regInfo.choiceBoxType.getItems().clear();
             regInfo.choiceBoxType.getItems().addAll(RegisterInfo.typs);
-            regInfo.choiceBoxType.getSelectionModel().select(2);
+            regInfo.choiceBoxType.getSelectionModel().select(0);
         }
         if (currentMode == 0) {
             btnAdd.setVisible(false);
@@ -388,11 +388,12 @@ public class Wf extends Application {
         } else {
             searchString = "'%" + searchString + "%'";
         }
-        String querySql = "select * from registration where pinyin like " + searchString + " or 手机号 like " + searchString
-                + " or 工作单位 like " + searchString
-                + " or 姓名 like " + searchString
-                + " or 邮箱 like " + searchString
-                + " or 是否付费 like " + searchString
+        String querySql = "select * from registration where pinyin like " 
+                + searchString + " or 手机号 like " + searchString
+//                + " or 工作单位 like " + searchString
+                + " or LOWER(姓名) like " + searchString
+//                + " or 邮箱 like " + searchString
+//                + " or 是否付费 like " + searchString
                 + " order by id desc " + " limit " + pageSize + " offset " + (page - 1) * pageSize;
         ObservableList<RegistrationInformation> dataList = FXCollections.observableArrayList();
         System.out.println(querySql);
@@ -431,9 +432,9 @@ public class Wf extends Application {
                         event.consume();
                     }
                 });
-                if(row.getIndex()!=-1){
+                if (row.getIndex() != -1) {
                     RegistrationInformation regInfo = (RegistrationInformation) tableUserInfo.getItems().get(row.getIndex());
-                    System.out.println("ccccc:"+regInfo.get姓名());
+                    System.out.println("ccccc:" + regInfo.get姓名());
                 }
                 return row;
             });
@@ -480,7 +481,7 @@ public class Wf extends Application {
                             String errorInfo = "";
                             if (info.name.equals("邮箱")) {
                                 valid = info.isValidEmailAddress(info.getValue());
-                                errorInfo = "邮箱格式不正确";
+                                errorInfo = "Please input right email address";
                             } else if (info.name.equals("手机号")) {
                                 valid = info.isChinaPhoneLegal(info.getValue());
                                 errorInfo = "请检查手机号码";
@@ -496,7 +497,8 @@ public class Wf extends Application {
                                 }
                             } else {
                                 valid = info.getValue().length() > 0;
-                                errorInfo = info.name + "是必填项";
+//                                errorInfo = info.name + "是必填项";
+                                  errorInfo = "Please fill all fields.";  
                             }
                             if (!valid) {
                                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -798,7 +800,7 @@ public class Wf extends Application {
         printed = queryForIntResult(printedSql);
         int dinnerCardCount = queryForIntResult(dinnerSqlTotal);
         int dinnerCardGiveCount = queryForIntResult(dinnerSqlGive);
-        Platform.runLater(() -> labelCount.setText("已领资料:" + getPaper + "  已打印:" + printed + "   总人数:" + total+"    晚宴:"+dinnerCardGiveCount+"/"+dinnerCardCount));
+        Platform.runLater(() -> labelCount.setText("已领资料:" + getPaper + "  已打印:" + printed + "   总人数:" + total + "    晚宴:" + dinnerCardGiveCount + "/" + dinnerCardCount));
     }
 
     private int queryForIntResult(String countString) {
@@ -859,14 +861,14 @@ public class Wf extends Application {
         List<RegistrationInformation> regInfos = (List<RegistrationInformation>) tableUserInfo.getSelectionModel().getSelectedItems();
         for (RegistrationInformation info : regInfos) {
             printRegInfo(info);
-            if("晚宴".equals(info.get发票抬头())){
+            if ("晚宴".equals(info.get发票抬头())) {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("发晚宴卡提醒");
                 alert.setHeaderText(null);
-                alert.setContentText("请给"+info.get姓名()+"发晚宴卡");
+                alert.setContentText("请给" + info.get姓名() + "发晚宴卡");
                 alert.showAndWait();
                 boolean giveSuccess = RegistrationService.dinnerCardGiveSuccess(info.getId());
-                if(giveSuccess){
+                if (giveSuccess) {
                     info.set发票抬头("晚宴-已发");
                 }
             }
@@ -876,11 +878,13 @@ public class Wf extends Application {
         }
     }
 
-
     private <T> TableColumn<T, ?> getTableColumnByName(TableView<T> tableView, String name) {
-        for (TableColumn<T, ?> col : tableView.getColumns())
-            if (col.getText().equals(name)) return col ;
-        return null ;
+        for (TableColumn<T, ?> col : tableView.getColumns()) {
+            if (col.getText().equals(name)) {
+                return col;
+            }
+        }
+        return null;
     }
 
     private void setTagMonitor() {
@@ -890,34 +894,34 @@ public class Wf extends Application {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                System.out.println("--------------"+item);
-                TableColumn<RegistrationInformation,String> tableColumn = (TableColumn)column;
+                System.out.println("--------------" + item);
+                TableColumn<RegistrationInformation, String> tableColumn = (TableColumn) column;
                 setText(empty ? "" : item.toString());
                 tableColumn.setText("晚宴");
                 setGraphic(null);
                 TableRow<RegistrationInformation> currentRow = getTableRow();
                 if (!isEmpty()) {
-                    currentRow.getStyleClass().removeAll("hight-light-row","hight-light-row-green");
+                    currentRow.getStyleClass().removeAll("hight-light-row", "hight-light-row-green");
                     if ("晚宴".equals(item)) {
                         currentRow.getStyleClass().add("hight-light-row");
-                    }else if("晚宴-已发".equals(item)){
+                    } else if ("晚宴-已发".equals(item)) {
                         currentRow.getStyleClass().add("hight-light-row-green");
-                    }else{
-                        currentRow.getStyleClass().removeAll("hight-light-row","hight-light-row-green");
+                    } else {
+                        currentRow.getStyleClass().removeAll("hight-light-row", "hight-light-row-green");
                     }
                 }
             }
         });
-        if(c1!=null){
+        if (c1 != null) {
             c1.setCellFactory(cb);
         }
-        if(c2!=null){
+        if (c2 != null) {
             c2.setCellFactory(cb);
         }
     }
 
-    private void renderTableView(){
-        ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(false);
-        ((TableColumn)tableUserInfo.getColumns().get(0)).setVisible(true);
+    private void renderTableView() {
+        ((TableColumn) tableUserInfo.getColumns().get(0)).setVisible(false);
+        ((TableColumn) tableUserInfo.getColumns().get(0)).setVisible(true);
     }
 }
